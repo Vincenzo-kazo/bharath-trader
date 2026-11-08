@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101820">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Bharath Trader</title>
+<style>
+:root{color-scheme:dark;--bg:#0d151e;--panel:#151f2a;--panel2:#1b2835;--muted:#8c9aaa;--blue:#398cff;--green:#27c58b;--red:#ff5b68;--line:#293746}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f4f7fb;font:15px system-ui,-apple-system,Segoe UI,sans-serif;padding-bottom:84px}
+header{padding:20px 18px 15px;background:#101923;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}
+.brand{display:flex;align-items:center;justify-content:space-between}.brand strong{font-size:18px;letter-spacing:1.2px}.demo{font-size:11px;color:#8dbaff;border:1px solid #31537a;padding:5px 9px;border-radius:20px}
+.pnl{text-align:center;padding:18px 0 10px}.pnl .value{font-size:32px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}.pnl small{display:block;color:var(--muted);font-size:11px;letter-spacing:1px;margin-top:3px}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 16px}.metric{background:var(--panel);padding:13px;border-radius:12px}.metric span{display:block;color:var(--muted);font-size:12px}.metric b{display:block;font-size:17px;margin-top:5px;font-variant-numeric:tabular-nums}
+main{padding:0 16px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:8px 2px 10px}.section-head b{font-size:14px}.section-head small{color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px;margin-bottom:10px}.empty{color:var(--muted);text-align:center;padding:25px 10px;font-size:13px}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}.symbol{font-weight:700}.sub{color:var(--muted);font-size:12px;margin-top:4px}.profit{color:var(--green);font-weight:700}.loss{color:var(--red);font-weight:700}
+button{border:0;border-radius:10px;padding:12px 15px;font-weight:700;color:white;background:var(--blue);font-size:14px}button.secondary{background:var(--panel2);border:1px solid var(--line);color:#dce7f3}button.sell{background:#b83f50}button.buy{background:#168b68}
+.actions{display:flex;gap:9px;margin:12px 0}.actions button{flex:1}
+nav{position:fixed;bottom:0;left:0;right:0;background:#111923;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:3}
+nav button{background:transparent;color:var(--muted);padding:7px 4px;font-size:11px;flex:1;border-radius:8px}nav button.active{color:var(--blue);background:#1a2b3d}
+nav .ico{display:block;font-size:19px;margin-bottom:3px}
+.page{display:none}.page.active{display:block}
+.notice{color:var(--muted);font-size:11px;line-height:1.45;text-align:center;padding:14px 22px}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:5;align-items:end}.modal.show{display:flex}.sheet{background:var(--panel);border-radius:18px 18px 0 0;padding:20px;width:100%;border:1px solid var(--line)}.sheet h3{margin:0 0 14px}.sheet input,.sheet select{width:100%;background:#0d151e;color:white;border:1px solid var(--line);padding:12px;border-radius:9px;margin:6px 0 12px}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><strong>BHARATH TRADER</strong><span class="demo">DEMO UI PREVIEW</span></div>
+ <div class="pnl"><div class="value" id="pnl">+0.00 USD</div><small>FLOATING PROFIT / LOSS</small></div>
+</header>
+<div class="metrics">
+ <div class="metric"><span>Balance</span><b id="balance">5,000.00 USD</b></div>
+ <div class="metric"><span>Equity</span><b id="equity">5,000.00 USD</b></div>
+ <div class="metric"><span>Margin</span><b id="margin">0.00 USD</b></div>
+ <div class="metric"><span>Free Margin</span><b id="free">5,000.00 USD</b></div>
+</div>
+<main>
+ <section id="trade" class="page active">
+  <div class="section-head"><b>POSITIONS</b><small id="poscount">0 positions</small></div>
+  <div id="positions" class="card empty">No open positions</div>
+  <div class="section-head"><b>PENDING ORDERS</b><small>Demo preview</small></div>
+  <div class="card empty">No pending orders</div>
+  <div class="actions"><button class="buy" onclick="openOrder('BUY')">BUY</button><button class="sell" onclick="openOrder('SELL')">SELL</button></div>
+ </section>
+ <section id="quotes" class="page">
+  <div class="section-head"><b>MARKET WATCH</b><small>Sample quotes</small></div>
+  <div class="card"><div class="row"><b>XAUUSD</b><span>2,350.20</span></div><div class="sub">Gold / US Dollar · Preview price</div></div>
+  <div class="card"><div class="row"><b>EURUSD</b><span>1.08420</span></div><div class="sub">Euro / US Dollar · Preview price</div></div>
+  <div class="card"><div class="row"><b>GBPUSD</b><span>1.27150</span></div><div class="sub">British Pound / US Dollar · Preview price</div></div>
+ </section>
+ <section id="chart" class="page">
+  <div class="section-head"><b>CHART</b><small>XAUUSD · M15</small></div>
+  <div class="card empty">Chart placeholder<br><br>Live market chart will require a market-data / MT5 integration.</div>
+ </section>
+ <section id="history" class="page">
+  <div class="section-head"><b>HISTORY</b><small>Recent activity</small></div>
+  <div id="historylist" class="card empty">No demo preview trades yet</div>
+ </section>
+ <section id="settings" class="page">
+  <div class="section-head"><b>SETTINGS</b></div>
+  <div class="card"><div class="row"><span>Account</span><b>MetaQuotes-Demo</b></div></div>
+  <div class="card"><div class="row"><span>Account mode</span><b>Demo preview</b></div></div>
+  <div class="card"><div class="row"><span>Theme</span><b>Dark</b></div></div>
+  <p class="notice">This is an interface prototype only. It does not connect to MetaTrader, use your login, fetch live prices, or place real/demo orders.</p>
+ </section>
+</main>
+<nav>
+ <button data-page="quotes"><span class="ico">⇅</span>Quotes</button>
+ <button data-page="chart"><span class="ico">▥</span>Chart</button>
+ <button data-page="trade" class="active"><span class="ico">☷</span>Trade</button>
+ <button data-page="history"><span class="ico">◷</span>History</button>
+ <button data-page="settings"><span class="ico">⚙</span>Settings</button>
+</nav>
+<div class="modal" id="modal"><div class="sheet">
+ <div class="row"><h3 id="orderTitle">New demo preview order</h3><button class="secondary" onclick="closeOrder()">✕</button></div>
+ <label>Symbol</label><select id="symbol"><option>XAUUSD</option><option>EURUSD</option><option>GBPUSD</option></select>
+ <label>Volume (lots)</label><input id="volume" type="number" min="0.01" step="0.01" value="0.01">
+ <div class="actions"><button class="buy" onclick="addPosition('BUY')">BUY preview</button><button class="sell" onclick="addPosition('SELL')">SELL preview</button></div>
+ <p class="notice">Preview only — no order is sent to MT5.</p>
+ </div></div>
+<script>
+let positions=[],history=[];function nav(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p))}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.page)));
+function openOrder(side){document.getElementById('orderTitle').textContent='New '+side+' preview order';document.getElementById('modal').classList.add('show')}
+function closeOrder(){document.getElementById('modal').classList.remove('show')}
+function addPosition(side){let sym=document.getElementById('symbol').value,vol=Number(document.getElementById('volume').value);if(!vol||vol<0.01)return;let p={side,sym,vol,pl:0};positions.push(p);history.unshift({text:side+' '+vol.toFixed(2)+' '+sym,pl:0});render();closeOrder();nav('trade')}
+function render(){let total=positions.reduce((s,p)=>s+p.pl,0);document.getElementById('pnl').textContent=(total>=0?'+':'')+total.toFixed(2)+' USD';document.getElementById('pnl').style.color=total>=0?'var(--green)':'var(--red)';document.getElementById('equity').textContent=(5000+total).toLocaleString('en-US',{minimumFractionDigits:2})+' USD';document.getElementById('free').textContent=(5000+total).toLocaleString('en-US',{minimumFractionDigits:2})+' USD';document.getElementById('poscount').textContent=positions.length+' positions';let box=document.getElementById('positions');box.className='card';box.innerHTML=positions.length?positions.map((p,i)=>`<div class="row"><div><div class="symbol">${p.sym} ${p.side}</div><div class="sub">${p.vol.toFixed(2)} lots · Preview position</div></div><div class="row"><b class="${p.pl>=0?'profit':'loss'}">${p.pl.toFixed(2)} USD</b><button class="secondary" onclick="closePosition(${i})">Close</button></div></div>`).join('<hr style="border:0;border-top:1px solid var(--line);margin:13px 0">'):'<div class="empty">No open positions</div>';let h=document.getElementById('historylist');h.className='card';h.innerHTML=history.length?history.map(x=>`<div class="row"><span>${x.text}</span><b>${x.pl.toFixed(2)} USD</b></div>`).join('<hr style="border:0;border-top:1px solid var(--line);margin:12px 0">'):'<div class="empty">No demo preview trades yet</div>'}
+function closePosition(i){let p=positions.splice(i,1)[0];history.unshift({text:'Closed '+p.side+' '+p.vol.toFixed(2)+' '+p.sym,pl:p.pl});render()}
+</script>
+<script>
+if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{})); }
+</script>
+</body></html>
